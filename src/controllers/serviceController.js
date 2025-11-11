@@ -137,8 +137,6 @@ export const updateService = async (req, res) => {
     const id = new ObjectId(req.params.id);
     const service = await servicesColl.findOne({ _id: id });
     if (!service) return res.status(404).json({ message: "Not found" });
-    if (service.providerEmail !== req.userEmail)
-      return res.status(403).json({ message: "Forbidden" });
 
     const update = { $set: req.body };
     const result = await servicesColl.updateOne({ _id: id }, update);
@@ -153,12 +151,12 @@ export const getAllMyService = async (req, res) => {
   try {
     const { email } = req.query;
     if (!email) {
-      return res.status(400).json({ message: "Missing provider email" });
+      return res.status(400).json({ message: "Missing provider email!" });
     }
 
     const items = await servicesColl.find({ providerEmail: email }).toArray();
 
-    res.json({ total: items.length, items });
+    res.send(items);
   } catch (err) {
     console.error("Error in getAllMyService:", err);
     res.status(500).json({ message: "Server error" });
