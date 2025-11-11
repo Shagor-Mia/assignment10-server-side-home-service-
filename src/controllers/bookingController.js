@@ -99,3 +99,29 @@ export const deleteBooking = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+// Add Review
+export const addReview = async (req, res) => {
+  try {
+    const serviceId = req.params.serviceId;
+    const { rating, comment } = req.body;
+    const userEmail = req.user.email;
+
+    const review = {
+      userEmail,
+      rating: Number(rating),
+      comment,
+      createdAt: new Date(),
+    };
+
+    const result = await servicesCollection.updateOne(
+      { _id: new ObjectId(serviceId) },
+      { $push: { reviews: review } }
+    );
+
+    res.json(result);
+  } catch (error) {
+    console.error("Error adding review:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
