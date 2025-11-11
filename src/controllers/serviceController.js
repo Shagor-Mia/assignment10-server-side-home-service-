@@ -169,8 +169,6 @@ export const deleteService = async (req, res) => {
     const id = new ObjectId(req.params.id);
     const service = await servicesColl.findOne({ _id: id });
     if (!service) return res.status(404).json({ message: "Not found" });
-    if (service.providerEmail !== req.userEmail)
-      return res.status(403).json({ message: "Forbidden" });
 
     const result = await servicesColl.deleteOne({ _id: id });
     res.json(result);
