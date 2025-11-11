@@ -119,12 +119,10 @@ export const getServicesSorted = async (req, res) => {
 // POST /services (protected)
 export const createService = async (req, res) => {
   try {
-    const newService = req.body;
-    // newService.providerEmail = req.userEmail; // enforce provider email
-    // newService.createdAt = new Date();
-    // newService.reviews = [];
-    // newService.avgRating = 0;
-    // newService.ratingsCount = 0;
+    const newService = {
+      ...req.body,
+      status: req.body.status || "not booked",
+    };
 
     const result = await servicesColl.insertOne(newService);
     res.json(result);
