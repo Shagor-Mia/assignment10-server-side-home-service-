@@ -14,7 +14,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/service", servicesRouter);
-app.use("/booking", bookingRouter);
+app.use("/bookings", bookingRouter);
 
 connectDB();
 
