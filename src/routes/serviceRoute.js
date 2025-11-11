@@ -17,7 +17,6 @@ const servicesRouter = express.Router();
 
 // Public GET routes
 servicesRouter.get("/all", getAllServices);
-servicesRouter.get("/:id", getSingleService);
 
 servicesRouter.get("/page", getServicesByPage);
 servicesRouter.get("/search", getServicesBySearch);
@@ -28,6 +27,7 @@ servicesRouter.get("/sort", getServicesSorted);
 // Protected routes
 servicesRouter.get("/my-services", getAllMyService);
 servicesRouter.post("/", createService);
+servicesRouter.get("/:id", getSingleService);
 servicesRouter.patch("/:id", updateService);
 servicesRouter.delete("/:id", deleteService);
 

@@ -154,14 +154,15 @@ export const updateService = async (req, res) => {
 export const getAllMyService = async (req, res) => {
   try {
     const { email } = req.query;
-    if (!email)
+    if (!email) {
       return res.status(400).json({ message: "Missing provider email" });
+    }
 
     const items = await servicesColl.find({ providerEmail: email }).toArray();
 
-    res.send(items);
+    res.json({ total: items.length, items });
   } catch (err) {
-    console.error(err);
+    console.error("Error in getAllMyService:", err);
     res.status(500).json({ message: "Server error" });
   }
 };
