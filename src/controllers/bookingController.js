@@ -14,7 +14,17 @@ export const bookService = async (req, res) => {
     if (!serviceId || !bookingDate || !price || !userEmail) {
       return res.status(400).json({ message: "Missing required fields" });
     }
+    // Check for duplicate booking by the same user
+    const existingBooking = await bookingsCollection.findOne({
+      serviceId: serviceId,
+      userEmail: userEmail,
+    });
 
+    if (existingBooking) {
+      return res.status(400).json({
+        message: "You have already booked this service",
+      });
+    }
     //Find service info
     const service = await servicesCollection.findOne({
       _id: new ObjectId(serviceId),
@@ -28,7 +38,8 @@ export const bookService = async (req, res) => {
       userEmail,
       serviceId,
       serviceName: service.serviceName,
-      providerEmail: service.email,
+      providerEmail: service.providerEmail,
+      image: service.image,
       bookingDate,
       price,
       status: "booked",
@@ -62,6 +73,29 @@ export const getMyBookings = async (req, res) => {
     res.status(200).json(bookings);
   } catch (error) {
     console.error("Error fetching bookings:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+// Cancel/Delete a booking
+export const deleteBooking = async (req, res) => {
+  try {
+    const id = req.params.id;
+    // const userEmail = req.user.email;
+
+    const booking = await bookingsCollection.findOne({ _id: new ObjectId(id) });
+    if (!booking) return res.status(404).json({ message: "Booking not found" });
+
+    // if (booking.userEmail !== userEmail) {
+    //   return res.status(403).json({ message: "Unauthorized delete attempt" });
+    // }
+
+    const result = await bookingsCollection.deleteOne({
+      _id: new ObjectId(id),
+    });
+    res.send(result);
+  } catch (error) {
+    console.error("Error deleting booking:", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
