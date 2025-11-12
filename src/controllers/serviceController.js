@@ -91,26 +91,7 @@ export const getServicesByPrice = async (req, res) => {
     if (maxPrice) query.price.$lte = Number(maxPrice);
 
     const items = await servicesColl.find(query).toArray();
-    res.json({ total: items.length, items });
-  } catch (err) {
-    res.status(500).json({ message: "Server error" });
-  }
-};
-
-// GET services sorted
-export const getServicesSorted = async (req, res) => {
-  try {
-    const { sort } = req.query;
-    if (!sort) return res.status(400).json({ message: "Missing sort query" });
-
-    let sortObj = {};
-    if (sort === "price_asc") sortObj = { price: 1 };
-    else if (sort === "price_desc") sortObj = { price: -1 };
-    else if (sort === "rating") sortObj = { avgRating: -1 };
-    else return res.status(400).json({ message: "Invalid sort query" });
-
-    const items = await servicesColl.find().sort(sortObj).toArray();
-    res.json({ total: items.length, items });
+    res.send(items);
   } catch (err) {
     res.status(500).json({ message: "Server error" });
   }

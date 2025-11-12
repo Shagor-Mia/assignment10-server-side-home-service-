@@ -8,7 +8,6 @@ import {
   getServicesByPage,
   getServicesByPrice,
   getServicesBySearch,
-  getServicesSorted,
   getSingleService,
   updateService,
 } from "../controllers/serviceController.js";
@@ -22,7 +21,6 @@ servicesRouter.get("/page", getServicesByPage);
 servicesRouter.get("/search", getServicesBySearch);
 servicesRouter.get("/category", getServicesByCategory);
 servicesRouter.get("/price", getServicesByPrice);
-servicesRouter.get("/sort", getServicesSorted);
 
 // Protected routes
 servicesRouter.get("/my-services", getAllMyService);
