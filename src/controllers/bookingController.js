@@ -104,8 +104,8 @@ export const deleteBooking = async (req, res) => {
 export const addReview = async (req, res) => {
   try {
     const serviceId = req.params.serviceId;
-    const { rating, comment } = req.body;
-    const userEmail = req.user.email;
+    const { rating, comment, email } = req.body;
+    const userEmail = req.user.email || email;
 
     const review = {
       userEmail,
@@ -119,7 +119,7 @@ export const addReview = async (req, res) => {
       { $push: { reviews: review } }
     );
 
-    res.json(result);
+    res.json({ success: true, review });
   } catch (error) {
     console.error("Error adding review:", error);
     res.status(500).json({ message: "Internal Server Error" });

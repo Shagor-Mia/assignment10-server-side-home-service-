@@ -4,7 +4,7 @@ import { client } from "../config/database.js";
 const db = client.db("HouseHold_Service");
 const servicesColl = db.collection("Service");
 
-//
+//all service
 export const getAllServices = async (req, res) => {
   try {
     const items = await servicesColl.find().toArray();
@@ -15,6 +15,7 @@ export const getAllServices = async (req, res) => {
   }
 };
 
+// singleService
 export const getSingleService = async (req, res) => {
   try {
     const id = req.params.id;
@@ -23,23 +24,6 @@ export const getSingleService = async (req, res) => {
     if (!item) return res.status(404).json({ message: "Service not found" });
 
     res.send(item);
-  } catch (err) {
-    res.status(500).json({ message: "Server error" });
-  }
-};
-
-// GET all services (with pagination default page=1, limit=12)
-export const getServicesByPage = async (req, res) => {
-  try {
-    const page = Number(req.query.page) || 1;
-    const limit = Number(req.query.limit) || 12;
-    const skip = (page - 1) * limit;
-
-    const cursor = servicesColl.find().skip(skip).limit(limit);
-    const total = await servicesColl.countDocuments();
-    const items = await cursor.toArray();
-
-    res.json({ total, page, items });
   } catch (err) {
     res.status(500).json({ message: "Server error" });
   }

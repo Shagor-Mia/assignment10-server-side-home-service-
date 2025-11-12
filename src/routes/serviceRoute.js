@@ -5,7 +5,6 @@ import {
   getAllMyService,
   getAllServices,
   getServicesByCategory,
-  getServicesByPage,
   getServicesByPrice,
   getServicesBySearch,
   getSingleService,
@@ -16,8 +15,6 @@ const servicesRouter = express.Router();
 
 // Public GET routes
 servicesRouter.get("/all", getAllServices);
-
-servicesRouter.get("/page", getServicesByPage);
 servicesRouter.get("/search", getServicesBySearch);
 servicesRouter.get("/category", getServicesByCategory);
 servicesRouter.get("/price", getServicesByPrice);
