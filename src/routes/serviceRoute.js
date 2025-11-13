@@ -13,13 +13,12 @@ import {
 
 const servicesRouter = express.Router();
 
-// Public GET routes
+//  routes
 servicesRouter.get("/all", getAllServices);
 servicesRouter.get("/search", getServicesBySearch);
 servicesRouter.get("/category", getServicesByCategory);
 servicesRouter.get("/price", getServicesByPrice);
 
-// Protected routes
 servicesRouter.get("/my-services", getAllMyService);
 servicesRouter.post("/", createService);
 servicesRouter.get("/:id", getSingleService);
